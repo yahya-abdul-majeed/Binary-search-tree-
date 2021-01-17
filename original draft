@@ -1,0 +1,121 @@
+#include<iostream>
+using namespace std;
+
+struct Node {
+	int data;
+	Node* leftChild;
+	Node* rightChild;
+	Node(int data) {
+		this->data = data;
+		leftChild = nullptr;
+		rightChild = nullptr;
+	}
+};
+
+struct BinaryTree {
+	Node* root = nullptr;
+
+	void insert(int data) {
+		Node* parent;
+		Node* current;
+		Node* node = new Node(data);
+		if (root == nullptr) {
+			root = node;
+		}
+		else {
+			current = root;
+			parent = nullptr;
+			while (true) {
+				parent = current;
+				if (data < parent->data) {
+					current = current->leftChild;
+					if (current == NULL) {
+						parent->leftChild = node;
+						return;
+					}
+				}
+				else {
+					current = parent->rightChild;
+					if (current == NULL) {
+						parent->rightChild = node;
+						return;
+					}
+				}
+				
+			}
+		}
+		
+
+	}
+	Node* search(int data) {
+		Node* current = root;
+		while (current->data != data) {
+			
+			if (current->data > data) {
+				current = current->leftChild;
+			}
+			else {
+				current = current->rightChild;
+			}
+			if (current == NULL) {
+				return nullptr;
+			}
+		}
+		return current;
+	}
+
+	//traversing the tree
+	//wrapper functions
+	void inorder() {
+		inorder_traversal(root);
+	}
+	void preorder() {
+		preorder_traversal(root);
+	}
+	void postorder() {
+		postorder_traversal(root);
+	}
+
+
+private:
+	void inorder_traversal(Node* root) {
+		if (root!=nullptr) {
+			inorder_traversal(root->leftChild);
+			cout << root->data << " ";
+			inorder_traversal(root->rightChild);
+		}
+	}
+	void preorder_traversal(Node* root) {
+		if (root != nullptr) {
+			cout << root->data << " ";
+			inorder_traversal(root->leftChild);
+			inorder_traversal(root->rightChild);
+		}
+	}
+	void postorder_traversal(Node* root) {
+		if (root != nullptr) {
+			inorder_traversal(root->leftChild);
+			inorder_traversal(root->rightChild);
+			cout << root->data << " ";
+		}
+	}
+};
+
+int main() {
+	BinaryTree a;
+	int n;
+	while (cin >> n) {
+		a.insert(n);
+	}
+	cout << "This is inorder traversal" << endl;
+	a.inorder(); cout << endl;
+	cout << "This is preorder traversal" << endl;
+	a.preorder(); cout << endl;
+	cout << "This is postorder traversal" << endl;
+	a.postorder(); cout << endl;
+
+	cout << "Searching" << endl;
+	Node* temp= a.search(5);
+	cout << temp->data << endl;
+	
+}
