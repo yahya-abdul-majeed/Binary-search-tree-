@@ -47,6 +47,35 @@ struct BinaryTree {
 		
 
 	}
+	Node* deleteNode(Node* rootnode,int data) {//returns the new root of the binary search tree
+		if (rootnode == nullptr)//base case
+			return rootnode;
+
+		if (data < rootnode->data) {
+			rootnode->leftChild = deleteNode(rootnode->leftChild, data);
+		}
+		else if (data > rootnode->data) {
+			rootnode->rightChild = deleteNode(rootnode->rightChild, data);
+		}
+		else {//data==rootnode->data
+			if (rootnode->leftChild == nullptr) {
+				Node* temp = rootnode->rightChild;
+				free(rootnode);
+				return temp;
+			}
+			else if (rootnode->rightChild == nullptr) {
+				Node* temp = rootnode->leftChild;
+				free(rootnode);
+				return temp;
+			}
+			else {//if has two child nodes
+				Node* temp = minvaluenode(rootnode->rightChild);
+				rootnode->data = temp->data;
+				rootnode->rightChild = deleteNode(rootnode->rightChild, temp->data);
+			}
+		}
+		return rootnode;
+	}
 	Node* search(int data) {
 		Node* current = root;
 		while (current->data != data) {
